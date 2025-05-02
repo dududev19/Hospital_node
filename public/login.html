@@ -2,105 +2,108 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Login RH - São Lucas & Mendel</title>
+  <title>Página de Login</title>
   <style>
     body {
+      background-image: url('/imagens/fundo-login.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
       font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
       display: flex;
-      height: 100vh;
       justify-content: center;
       align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
     }
 
-    .container {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      width: 300px;
-    }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    input[type="text"], input[type="password"] {
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      padding: 10px;
-      margin-top: 8px;
-      margin-bottom: 15px;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .login-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    input {
+      margin: 8px 0;
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 5px;
     }
 
     button {
-      width: 100%;
-      padding: 10px;
       background-color: #007bff;
-      border: none;
       color: white;
-      border-radius: 6px;
+      padding: 12px;
+      width: 100%;
+      border: none;
       cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
     }
 
     button:hover {
       background-color: #0056b3;
     }
 
-    .mensagem {
-      text-align: center;
-      margin-top: 10px;
-      color: red;
+    h2 {
+      color: #333;
+      margin-bottom: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h2>Login RH</h2>
-    <form id="loginForm">
-      <label for="usuario">Usuário</label>
-      <input type="text" id="usuario" name="usuario" required>
 
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" name="senha" required>
+<div class="login-card">
+  <h2>Login do Sistema</h2>
+  <form id="loginForm">
+    <input type="text" id="usuario" placeholder="Usuário" required>
+    <input type="password" id="senha" placeholder="Senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+</div>
 
-      <button type="submit">Entrar</button>
-    </form>
-    <div class="mensagem" id="mensagem"></div>
-  </div>
+<script>
+  document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  <script>
-    const form = document.getElementById('loginForm');
-    const mensagem = document.getElementById('mensagem');
+    const usuario = document.getElementById("usuario").value;
+    const senha = document.getElementById("senha").value;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const usuario = form.usuario.value;
-      const senha = form.senha.value;
-
-      try {
-        const resposta = await fetch('/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ usuario, senha })
-        });
-
-        const resultado = await resposta.json();
-
-        if (resposta.ok) {
-          mensagem.style.color = 'green';
-          mensagem.textContent = resultado.mensagem;
-        } else {
-          mensagem.style.color = 'red';
-          mensagem.textContent = resultado.erro;
-        }
-      } catch (err) {
-        mensagem.textContent = 'Erro ao conectar ao servidor.';
-      }
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ usuario, senha })
     });
-  </script>
+
+    const result = await response.json();
+
+    if (response.ok) {
+      alert(result.message);
+      window.location.href = "/dashboard"; // ou outra rota de sucesso
+    } else {
+      alert(result.error || 'Erro ao fazer login.');
+    }
+  });
+</script>
+
 </body>
 </html>

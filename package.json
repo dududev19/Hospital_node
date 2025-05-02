@@ -1,22 +1,36 @@
 {
   "name": "hospital-node-mysql",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-list-endpoints": "^7.1.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.0"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dududev19/Hospital_node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dududev19/Hospital_node/issues"
+  },
+  "homepage": "https://github.com/dududev19/Hospital_node#readme",
   "description": ""
 }

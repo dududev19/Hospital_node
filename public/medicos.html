@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Médicos Cadastrados</title>
+  <style>
+    body {
+      background-color: #f0f2f5;
+      height: 100%;
+      margin: 0;
+      padding: 40px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 900px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    #listaMedicos {
+      text-align: left;
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 800px;
+    }
+
+    #listaMedicos ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    #listaMedicos li {
+      margin-bottom: 12px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 10px;
+      position: relative;
+    }
+
+    .voltar-btn {
+      display: block;
+      margin: 30px auto 0;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-excluir {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      background-color: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    /* Popup de confirmação */
+    #confirmacaoPopup {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .popup-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .popup-box p {
+      margin-bottom: 20px;
+    }
+
+    .popup-box button {
+      margin: 0 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-sim {
+      background-color: red;
+      color: white;
+    }
+
+    .btn-nao {
+      background-color: #ccc;
+      color: black;
+    }
+
+    /* Estilo para o feedback */
+    #feedback {
+      display: none;
+      padding: 15px;
+      background-color: green;
+      color: white;
+      border-radius: 5px;
+      margin-top: 20px;
+      width: 90%;
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .erro {
+      background-color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+    <h2>Lista de Médicos Cadastrados</h2>
+  </div>
+
+  <div id="listaMedicos">
+    <ul id="medicosLista"></ul>
+    <button onclick="history.back()" class="voltar-btn">Voltar</button>
+  </div>
+
+  <!-- Feedback de sucesso ou erro -->
+  <div id="feedback"></div>
+
+  <!-- Popup de confirmação -->
+  <div id="confirmacaoPopup">
+    <div class="popup-box">
+      <p>Você tem certeza que deseja excluir o médico?</p>
+      <button class="btn-sim" onclick="confirmarExclusao()">Sim</button>
+      <button class="btn-nao" onclick="cancelarExclusao()">Não</button>
+    </div>
+  </div>
+
+  <script>
+    let medicoParaExcluir = null;
+
+    function carregarMedicos() {
+      fetch('/medicos')
+        .then(response => response.json())
+        .then(data => {
+          const lista = document.getElementById('medicosLista');
+          if (!data || data.length === 0) {
+            lista.innerHTML = '<li>Nenhum médico cadastrado ainda.</li>';
+            return;
+          }
+
+          lista.innerHTML = '';
+          data.forEach(medico => {
+            lista.innerHTML += `
+              <li>
+                <strong>Nome:</strong> ${medico.nome} <br>
+                <strong>CRM:</strong> ${medico.crm} <br>
+                <strong>Email:</strong> ${medico.email} <br>
+                <strong>Telefone:</strong> ${medico.telefone || 'Não informado'} <br>
+                <strong>Especialidade:</strong> ${medico.especialidade}
+                <button class="btn-excluir" onclick="mostrarConfirmacao(${medico.id})">X</button>
+              </li>
+            `;
+          });
+        })
+        .catch(() => {
+          mostrarFeedback('Erro ao carregar a lista de médicos.', 'erro');
+        });
+    }
+
+    function mostrarConfirmacao(id) {
+      medicoParaExcluir = id;
+      document.getElementById('confirmacaoPopup').style.display = 'flex';
+    }
+
+    function cancelarExclusao() {
+      medicoParaExcluir = null;
+      document.getElementById('confirmacaoPopup').style.display = 'none';
+    }
+
+    function confirmarExclusao() {
+      if (medicoParaExcluir !== null) {
+        fetch(`/medicos/${medicoParaExcluir}`, {
+          method: 'DELETE'
+        })
+        .then(response => {
+          if (response.ok) {
+            mostrarFeedback("Médico excluído com sucesso.", "sucesso");
+            carregarMedicos();
+          } else {
+            mostrarFeedback("Erro ao excluir o médico.", "erro");
+          }
+        })
+        .catch(() => {
+          mostrarFeedback("Erro de conexão.", "erro");
+        })
+        .finally(() => {
+          document.getElementById('confirmacaoPopup').style.display = 'none';
+          medicoParaExcluir = null;
+        });
+      }
+    }
+
+    function mostrarFeedback(mensagem, tipo) {
+      const feedback = document.getElementById('feedback');
+      feedback.textContent = mensagem;
+      feedback.className = tipo; // "erro" ou outra classe
+      feedback.style.display = 'block';
+      setTimeout(() => {
+        feedback.style.display = 'none';
+      }, 3000); // Esconde após 3 segundos
+    }
+
+    carregarMedicos();
+  </script>
+
+</body>
+</html>
