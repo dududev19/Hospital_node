@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login do Paciente</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background: linear-gradient(to bottom, #0055a5, #003366);
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #003366;
+      margin-bottom: 20px;
+    }
+
+    form input, form button {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+    }
+
+    form button {
+      background-color: #0055a5;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    form button:hover {
+      background-color: #003d73;
+    }
+
+    .link {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #0055a5;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="box">
+      <h2>Login do Paciente</h2>
+      <form id="loginPacienteForm">
+        <input type="text" name="numero_carteirinha" placeholder="Número da carteirinha" required>
+        <input type="password" name="senha" placeholder="Senha" required>
+        <button type="submit">Entrar</button>
+      </form>
+
+      <div class="link" onclick="window.location.href='/cadastro_paciente.html'">Ainda não tem cadastro? Clique aqui</div>
+    </div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginPacienteForm');
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const numero_carteirinha = form.numero_carteirinha.value;
+      const senha = form.senha.value;
+
+      fetch('/login-paciente', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ numero_carteirinha, senha })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          alert(data.error || data.message);
+        }
+      })
+      .catch(err => {
+        console.error('Erro ao tentar login:', err);
+        alert('Erro ao tentar login. Tente novamente mais tarde.');
+      });
+    });
+  </script>
+</body>
+</html>

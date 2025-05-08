@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Hospital São Lucas & Mendel - Login RH</title>
+  <style>
+    body {
+      background-image: url('/imagens/fundo-login.png');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 0;
+    }
+
+    .login-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      width: 400px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-card h2 {
+      color: #003366;
+      margin-bottom: 25px;
+    }
+
+    input {
+      margin: 8px 0;
+      padding: 12px;
+      font-size: 16px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    button {
+      background-color: #0055a5;
+      color: white;
+      padding: 12px;
+      width: 100%;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: bold;
+      margin-top: 10px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #003d73;
+    }
+
+    .error-message {
+      color: #d9534f;
+      margin: 10px 0;
+      font-size: 14px;
+      display: none;
+    }
+
+    .hospital-logo {
+      margin-bottom: 20px;
+      font-weight: bold;
+      color: #003366;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <div class="hospital-logo">Hospital São Lucas & Mendel</div>
+  <h2>Área do RH - Login</h2>
+  
+  <div id="errorMessage" class="error-message"></div>
+  
+  <form id="loginForm">
+    <input type="text" id="usuario" placeholder="Usuário" required>
+    <input type="password" id="senha" placeholder="Senha" required>
+    <button type="submit">Entrar</button>
+  </form>
+</div>
+
+<script>
+  document.getElementById("loginForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+    
+    const usuario = document.getElementById("usuario").value;
+    const senha = document.getElementById("senha").value;
+    const errorMessage = document.getElementById("errorMessage");
+    
+    // Reset error message
+    errorMessage.style.display = 'none';
+    
+    // Validação básica no frontend
+    if (!usuario || !senha) {
+      errorMessage.textContent = 'Usuário e senha são obrigatórios!';
+      errorMessage.style.display = 'block';
+      return;
+    }
+    
+    // Requisição AJAX para validar no backend
+    fetch('/loginRHNovo', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ usuario: usuario, senha: senha })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.sucesso) {
+        // Armazena no sessionStorage que o usuário está autenticado
+        sessionStorage.setItem('autenticado', 'true');
+        sessionStorage.setItem('usuario', usuario);
+        
+        // Redireciona para o painel RH
+        window.location.href = "painel_rh.html";
+      } else {
+        errorMessage.textContent = 'Usuário ou senha incorretos!';
+        errorMessage.style.display = 'block';
+      }
+    })
+    .catch(err => {
+      console.error('Erro ao tentar autenticar:', err);
+      errorMessage.textContent = 'Erro no servidor, tente novamente mais tarde.';
+      errorMessage.style.display = 'block';
+    });
+  });
+</script>
+
+</body>
+</html>
