@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Painel RH - Hospital São Lucas</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #0055a5;
+      text-align: center;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+    .section-title {
+      color: #0055a5;
+      border-bottom: 2px solid #0055a5;
+      padding-bottom: 8px;
+      margin-top: 30px;
+      font-size: 1.3em;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #555;
+    }
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 16px;
+      transition: border 0.3s;
+    }
+    input:focus, select:focus {
+      border-color: #0055a5;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0,85,165,0.1);
+    }
+    button {
+      background-color: #0055a5;
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 600;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #003d7a;
+    }
+    .success-message {
+      color: #28a745;
+      text-align: center;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #e8f5e9;
+      border-radius: 4px;
+      display: none;
+    }
+    .error-message {
+      color: #dc3545;
+      text-align: center;
+      margin: 15px 0;
+      padding: 10px;
+      background-color: #f8d7da;
+      border-radius: 4px;
+      display: none;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 15px;
+      margin-top: 30px;
+      flex-wrap: wrap;
+    }
+    .action-btn {
+      flex: 1;
+      min-width: 200px;
+      text-align: center;
+      padding: 12px;
+      background-color: #0055a5;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: all 0.3s;
+      font-weight: 600;
+    }
+    .action-btn:hover {
+      background-color: #003d7a;
+      transform: translateY(-2px);
+    }
+    .logout-btn {
+      background-color: #dc3545;
+    }
+    .logout-btn:hover {
+      background-color: #c82333;
+    }
+    .time-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(0,0,0,.1);
+      border-radius: 50%;
+      border-top-color: #0055a5;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 10px;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .hidden {
+      display: none;
+    }
+    .edit-mode-banner {
+      background-color: #0055a5;
+      color: white;
+      padding: 10px;
+      text-align: center;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Painel de Recursos Humanos</h1>
+    
+    <div id="editBanner" class="edit-mode-banner hidden">
+      Modo Edição - Atualizando Cadastro Médico
+    </div>
+    
+    <h2 class="section-title">Cadastro de Médicos</h2>
+    
+    <form id="formMedico">
+      <input type="hidden" id="medicoId" name="id">
+      
+      <div class="form-group">
+        <label for="nome">Nome Completo:</label>
+        <input type="text" id="nome" name="nome" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo" required>
+          <option value="">Selecione</option>
+          <option value="M">Masculino</option>
+          <option value="F">Feminino</option>
+          <option value="O">Outro</option>
+          <option value="N">Prefiro não informar</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="data_nascimento">Data de Nascimento:</label>
+        <input type="date" id="data_nascimento" name="data_nascimento" required>
+      </div>
+      
+      <div class="time-grid">
+        <div class="form-group">
+          <label for="cpf">CPF:</label>
+          <input type="text" id="cpf" name="cpf" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="crm">CRM:</label>
+          <input type="text" id="crm" name="crm" required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="especialidade">Especialidade:</label>
+        <input type="text" id="especialidade" name="especialidade">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" name="telefone" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="endereco">Endereço Completo:</label>
+        <textarea id="endereco" name="endereco" rows="3" required></textarea>
+      </div>
+      
+      <h2 class="section-title">Horários Padrão de Atendimento</h2>
+      
+      <div class="time-grid">
+        <div class="form-group">
+          <label for="inicioManha">Início Manhã:</label>
+          <input type="time" id="inicioManha" name="inicio_manha" value="08:00" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="fimManha">Fim Manhã:</label>
+          <input type="time" id="fimManha" name="fim_manha" value="12:00" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="inicioTarde">Início Tarde:</label>
+          <input type="time" id="inicioTarde" name="inicio_tarde" value="13:00" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="fimTarde">Fim Tarde:</label>
+          <input type="time" id="fimTarde" name="fim_tarde" value="18:30" required>
+        </div>
+      </div>
+      
+      <div id="loadingIndicator" style="text-align: center; display: none;">
+        <span class="loading"></span> Processando...
+      </div>
+      
+      <button type="submit" id="submitBtn">Cadastrar Médico</button>
+      
+      <div id="message" class="success-message"></div>
+      <div id="errorMessage" class="error-message"></div>
+    </form>
+    
+    <div class="action-buttons">
+      <a href="/medicos.html" class="action-btn">Ver Médicos Cadastrados</a>
+      <a href="/login_rh" class="action-btn logout-btn" onclick="logout()">Sair do Sistema</a>
+    </div>
+  </div>
+
+  <script>
+    // Verifica se está em modo de edição
+    const urlParams = new URLSearchParams(window.location.search);
+    const medicoId = urlParams.get('editar');
+    
+    // Elementos do formulário
+    const form = document.getElementById('formMedico');
+    const submitBtn = document.getElementById('submitBtn');
+    const messageDiv = document.getElementById('message');
+    const errorDiv = document.getElementById('errorMessage');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const editBanner = document.getElementById('editBanner');
+    
+    // Se estiver editando, carrega os dados do médico
+    if (medicoId) {
+      submitBtn.textContent = 'Atualizar Cadastro';
+      editBanner.classList.remove('hidden');
+      
+      document.addEventListener('DOMContentLoaded', async () => {
+        try {
+          loadingIndicator.style.display = 'block';
+          
+          // Carrega dados do médico
+          const response = await fetch(`http://localhost:3000/medicos/${medicoId}`, {
+            credentials: 'include'
+          });
+          
+          if (!response.ok) {
+            throw new Error('Erro ao carregar dados do médico');
+          }
+          
+          const medico = await response.json();
+          
+          // Preenche o formulário
+          document.getElementById('medicoId').value = medico.id;
+          document.getElementById('nome').value = medico.nome || '';
+          document.getElementById('sexo').value = medico.sexo || '';
+          document.getElementById('data_nascimento').value = medico.data_nascimento || '';
+          document.getElementById('cpf').value = medico.cpf || '';
+          document.getElementById('crm').value = medico.crm || '';
+          document.getElementById('especialidade').value = medico.especialidade || '';
+          document.getElementById('email').value = medico.email || '';
+          document.getElementById('telefone').value = medico.telefone || '';
+          document.getElementById('endereco').value = medico.endereco || '';
+          
+          // Carrega os horários
+          const horariosResponse = await fetch(`http://localhost:3000/medicos/${medicoId}/horarios`, {
+            credentials: 'include'
+          });
+          
+          if (horariosResponse.ok) {
+            const horarios = await horariosResponse.json();
+            if (horarios.length > 0) {
+              // Usa o primeiro dia como referência para os horários padrão
+              document.getElementById('inicioManha').value = horarios[0].inicio_manha.substring(0,5);
+              document.getElementById('fimManha').value = horarios[0].fim_manha.substring(0,5);
+              document.getElementById('inicioTarde').value = horarios[0].inicio_tarde.substring(0,5);
+              document.getElementById('fimTarde').value = horarios[0].fim_tarde.substring(0,5);
+            }
+          }
+          
+        } catch (error) {
+          console.error('Erro ao carregar médico:', error);
+          showError('Erro ao carregar dados do médico para edição');
+        } finally {
+          loadingIndicator.style.display = 'none';
+        }
+      });
+    }
+    
+    // Funções para mostrar mensagens
+    function showMessage(msg) {
+      messageDiv.textContent = msg;
+      messageDiv.style.display = 'block';
+      errorDiv.style.display = 'none';
+      setTimeout(() => messageDiv.style.display = 'none', 5000);
+    }
+    
+    function showError(msg) {
+      errorDiv.textContent = msg;
+      errorDiv.style.display = 'block';
+      messageDiv.style.display = 'none';
+      setTimeout(() => errorDiv.style.display = 'none', 5000);
+    }
+    
+    // Manipulador do formulário
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        nome: form.nome.value,
+        sexo: form.sexo.value,
+        data_nascimento: form.data_nascimento.value,
+        cpf: form.cpf.value,
+        crm: form.crm.value,
+        especialidade: form.especialidade.value,
+        email: form.email.value,
+        telefone: form.telefone.value,
+        endereco: form.endereco.value
+      };
+      
+      // Se estiver editando, inclui o ID
+      if (medicoId) {
+        formData.id = medicoId;
+      }
+      
+      try {
+        loadingIndicator.style.display = 'block';
+        submitBtn.disabled = true;
+        
+        const url = medicoId ? `http://localhost:3000/medicos/${medicoId}` : 'http://localhost:3000/medicos';
+        const method = medicoId ? 'PUT' : 'POST';
+        
+        const response = await fetch(url, {
+          method: method,
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(formData),
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok) {
+          throw new Error(data.mensagem || 'Erro ao processar solicitação');
+        }
+        
+        // Se for cadastro novo, cria os horários padrão
+        if (!medicoId) {
+          const diasSemana = ['segunda', 'terca', 'quarta', 'quinta', 'sexta'];
+          const medicoId = data.id;
+          
+          for (const dia of diasSemana) {
+            await fetch(`http://localhost:3000/medicos/${medicoId}/horarios`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                dia_semana: dia,
+                inicio_manha: form.inicioManha.value + ':00',
+                fim_manha: form.fimManha.value + ':00',
+                inicio_tarde: form.inicioTarde.value + ':00',
+                fim_tarde: form.fimTarde.value + ':00'
+              }),
+              credentials: 'include'
+            });
+          }
+        }
+        
+        showMessage(medicoId ? 'Médico atualizado com sucesso!' : 'Médico cadastrado com sucesso!');
+        
+        if (!medicoId) {
+          form.reset();
+        }
+        
+      } catch (error) {
+        console.error('Erro no formulário:', error);
+        showError(error.message || 'Erro ao processar solicitação');
+        
+        if (error.message.includes('401')) {
+          window.location.href = '/login_rh';
+        }
+      } finally {
+        loadingIndicator.style.display = 'none';
+        submitBtn.disabled = false;
+      }
+    });
+    
+    // Máscaras para os campos
+    document.getElementById('cpf').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 3) value = value.replace(/^(\d{3})(\d)/g, '$1.$2');
+      if (value.length > 6) value = value.replace(/(\d{3})(\d)/, '$1.$2');
+      if (value.length > 9) value = value.replace(/(\d{3})(\d)/, '$1-$2');
+      if (value.length > 11) value = value.substring(0, 14);
+      e.target.value = value;
+    });
+    
+    document.getElementById('telefone').addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, '');
+      if (value.length > 2) value = `(${value.substring(0,2)}) ${value.substring(2)}`;
+      if (value.length > 10) value = `${value.substring(0,10)}-${value.substring(10,14)}`;
+      if (value.length > 15) value = value.substring(0, 15);
+      e.target.value = value;
+    });
+    
+    // Função de logout
+    async function logout() {
+      try {
+        await fetch('http://localhost:3000/logout', {
+          method: 'POST',
+          credentials: 'include'
+        });
+      } catch (error) {
+        console.error('Erro ao sair:', error);
+      }
+    }
+    
+    // Verifica autenticação ao carregar a página
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        const response = await fetch('http://localhost:3000/check-auth', {
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        
+        if (!data.sucesso) {
+          window.location.href = '/login_rh';
+        }
+      } catch (error) {
+        console.error('Erro ao verificar autenticação:', error);
+        window.location.href = '/login_rh';
+      }
+    });
+  </script>
+</body>
+</html>

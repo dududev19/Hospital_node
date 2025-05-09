@@ -8,6 +8,7 @@ const connection = mysql.createConnection({
     database: 'hospital_sao_lucas'
 });
 
+// Conexão com o banco de dados
 connection.connect((err) => {
     if (err) {
         console.error('Erro ao conectar no banco de dados:', err);
