@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hospital São Lucas & Mendel</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --verde-principal: #0c98cf;
+      --verde-escuro: #0c98cf;
+      --cinza-claro: #f8f9fa;
+      --cinza-medio: #e9ecef;
+    }
+
+    body {
+      background-color: var(--cinza-claro);
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+    }
+
+    /* Cabeçalho */
+    .header {
+      background-color: var(--verde-principal);
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 20px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .header img {
+      height: 70px;
+      width: auto;
+      border-radius: 10px;
+    }
+
+    .header h1 {
+      font-size: 1.8rem;
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .header .btn {
+      font-size: 0.95rem;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .header .d-flex.flex-column {
+        flex-direction: column !important;
+        margin-top: 10px;
+      }
+    }
+
+    /* Seção da história */
+    .story-section {
+      max-width: 960px;
+      margin: 40px auto;
+      background-color: white;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 25px rgba(0,0,0,0.08);
+    }
+
+    .story-section h2 {
+      color: var(--verde-principal);
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .story-section img {
+      width: 100%;
+      border-radius: 8px;
+      margin: 20px 0;
+    }
+
+    .story-section p {
+      font-size: 1.05rem;
+      line-height: 1.6;
+    }
+
+    /* Rodapé */
+    footer {
+      background-color: var(--verde-principal);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Cabeçalho -->
+  <div class="header px-4">
+    <div class="d-flex align-items-center gap-3">
+      <img src="/img/logo-oficial.png" alt="Logo Hospital" />
+      <h1>Hospital São Lucas & Mendel</h1>
+    </div>
+    <div class="d-flex flex-column flex-sm-row gap-2">
+      <a href="/login-rh" class="btn btn-light text-primary">Login RH</a>
+      <a href="/cadastro-paciente" class="btn btn-light text-primary">Cadastro Paciente</a>
+    </div>
+  </div>
+
+  <!-- Seção da história -->
+  <div class="story-section">
+    <h2>Nossa História</h2>
+    <p>
+      Fundado com o propósito de unir ciência e compaixão, o Hospital São Lucas & Mendel nasceu com uma missão clara:
+      cuidar das pessoas com excelência, ética e sigilo absoluto. Inspirado em São Lucas, patrono dos médicos, e Gregor Mendel, pai da genética moderna, nosso hospital é referência em longevidade, genética e medicina personalizada.
+    </p>
+
+    <p>
+      Localizado em um centro médico exclusivo em Campinas, atendemos com total discrição líderes, autoridades e famílias que prezam pela vida em sua melhor forma. Nossa equipe é formada pelos melhores especialistas do país, com estrutura de ponta e atendimento humanizado.
+    </p>
+
+    <p>
+      Cuidar vai além de tratar. No São Lucas & Mendel, acreditamos que ouvir, acolher e respeitar são pilares tão importantes quanto a tecnologia de última geração. Seja bem-vindo a um novo padrão de medicina.
+    </p>
+  </div>
+
+  <!-- Rodapé -->
+  <footer class="footer mt-5 py-4 text-white text-center" style="background-color: var(--verde-principal);">
+    <div class="container">
+      <p class="mb-1"><strong>Hospital São Lucas & Mendel</strong></p>
+      <p class="mb-1">Av. das Ciências, 1234 - Campinas/SP</p>
+      <p class="mb-1">CEP: 13083-970</p>
+      <p class="mb-0">Telefone: (19) 4002-8922</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

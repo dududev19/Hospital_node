@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Paciente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-image: url('/img/logo-oficial.png'); /* Caminho da sua imagem */
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background-color: rgba(255, 255, 255, 0.8); /* Fundo semi-transparente */
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 100%;
+      max-width: 450px; /* Ajusta a largura do formulário */
+      box-sizing: border-box;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2d3e50;
+      margin-bottom: 20px;
+      font-size: 1.8rem; /* Ajusta o tamanho do título */
+    }
+
+    label {
+      font-size: 1.1rem;
+      color: #333;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="password"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #2d3e50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #1c2a37;
+    }
+
+    .back-button {
+      background-color: #ddd;
+      color: #333;
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 1.1rem;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .back-button:hover {
+      background-color: #bbb;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h1>Cadastro de Paciente</h1>
+    <form action="/cadastrar-paciente" method="POST">
+      <label for="nome">Nome</label>
+      <input type="text" id="nome" name="nome" required>
+
+      <label for="telefone">Telefone</label>
+      <input type="tel" id="telefone" name="telefone" required>
+
+      <label for="cpf">CPF</label>
+      <input type="text" id="cpf" name="cpf" required>
+
+      <label for="certidao_nascimento">Certidão de Nascimento (se menor de idade)</label>
+      <input type="text" id="certidao_nascimento" name="certidao_nascimento">
+
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" name="endereco" required>
+
+      <label for="numero">Número</label>
+      <input type="number" id="numero" name="numero" required>
+
+      <label for="complemento">Complemento</label>
+      <input type="text" id="complemento" name="complemento">
+
+      <label for="data_nascimento">Data de Nascimento</label>
+      <input type="date" id="data_nascimento" name="data_nascimento" required>
+
+      <label for="carteirinha">Número da Carteirinha</label>
+      <input type="text" id="carteirinha" name="carteirinha" required>
+
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" name="senha" required>
+
+      <button type="submit">Cadastrar</button>
+    </form>
+
+    <a href="/" class="back-button">Voltar para o Início</a>
+  </div>
+</body>
+</html>

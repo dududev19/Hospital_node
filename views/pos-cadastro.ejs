@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro Completo - Hospital São Lucas & Mendel</title>
+  <style>
+    :root {
+      --verde-principal: #006400;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .content-container {
+      background-color: white;
+      text-align: center;
+      width: 80%;
+      max-width: 600px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 40px;
+      box-sizing: border-box;
+    }
+
+    h1 {
+      color: var(--verde-principal);
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      width: 100%;
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    p {
+      font-size: 1.2rem;
+      color: #555;
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .highlight {
+      font-weight: bold;
+      color: var(--verde-principal);
+    }
+
+    .back-button {
+      display: inline-block;
+      padding: 12px 30px;
+      margin-top: 20px;
+      background-color: var(--verde-principal);
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+      background-color: #004d00;
+    }
+
+    .phone-number {
+      font-size: 1.3rem;
+      color: var(--verde-principal);
+      font-weight: bold;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="content-container">
+    <h1>Cadastro Concluído!</h1>
+    <img src="/img/logo-oficial.png" alt="Logo do Hospital" class="logo">
+    <p>Olá, <span class="highlight"><%= paciente.nome %></span>! Seu cadastro foi realizado com sucesso.</p>
+    <p>Seu tipo de convênio é: <span class="highlight"><%= paciente.tipo_convenio %></span></p>
+    <p>Agora que você está cadastrado, para agendar suas consultas, por favor, entre em contato conosco pelo telefone conforme as instruções do seu convênio.</p>
+    <p class="phone-number">Telefone: <span class="highlight">(19) 4002-8922</span></p>
+    <a href="/" class="back-button">Voltar para a Página Inicial</a>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Paciente</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: #2d3e50;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login Paciente</h1>
+    <form action="/login-paciente" method="POST">
+      <div>
+        <label for="carteirinha">Carteirinha:</label>
+        <input type="text" id="carteirinha" name="carteirinha" required>
+      </div>
+      <div>
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" name="senha" required>
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title><%= exibirInativos ? 'Ex-Médicos' : 'Médicos Cadastrados' %></title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      position: relative;
+      background: url('/img/logo-oficial.png') no-repeat center center fixed;
+      background-size: cover;
+      padding: 30px;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.3);
+      z-index: -1;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    table th, table td {
+      text-align: center;
+      vertical-align: middle;
+    }
+
+    .btn + .btn {
+      margin-left: 10px;
+    }
+
+    .btn-sm {
+      padding: 4px 8px;
+    }
+
+    .btn-group {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body class="p-4">
+  <div class="container">
+    <h2><%= exibirInativos ? 'Ex-Médicos' : 'Médicos Cadastrados' %></h2>
+
+    <table class="table table-striped table-hover">
+      <thead class="table-dark">
+        <tr>
+          <th>Nome</th>
+          <th>CRM</th>
+          <th>Especialidade</th>
+          <th>Idade</th>
+          <% if (!exibirInativos) { %>
+            <th>Ações</th>
+          <% } %>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (medicos.length === 0) { %>
+          <tr>
+            <td colspan="<%= exibirInativos ? 4 : 5 %>">
+              Nenhum médico <%= exibirInativos ? 'inativo' : 'cadastrado' %>.
+            </td>
+          </tr>
+        <% } else { %>
+          <% medicos.forEach(medico => { %>
+            <tr>
+              <td><%= medico.nome %></td>
+              <td><%= medico.crm %></td>
+              <td><%= medico.especialidade %></td>
+              <td><%= medico.idade %></td>
+              <% if (!exibirInativos) { %>
+                <td>
+                  <div class="btn-group">
+                    <a href="/editar-medico/<%= medico.id %>" class="btn btn-warning btn-sm">Editar</a>
+                    <form action="/excluir-medico/<%= medico.id %>" method="POST" onsubmit="return confirm('Deseja realmente excluir este médico?')">
+                      <button class="btn btn-danger btn-sm">Excluir</button>
+                    </form>
+                  </div>
+                </td>
+              <% } %>
+            </tr>
+          <% }) %>
+        <% } %>
+      </tbody>
+    </table>
+
+    <div class="d-flex justify-content-between">
+      <% if (!exibirInativos) { %>
+        <a href="/ex-medicos" class="btn btn-secondary">Ver Ex-Médicos</a>
+      <% } else { %>
+        <a href="/medicos" class="btn btn-secondary">Ver Médicos Ativos</a>
+      <% } %>
+
+      <a href="/painel-rh" class="btn btn-primary">Voltar ao Painel</a>
+    </div>
+  </div>
+</body>
+</html>
